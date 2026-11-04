@@ -13,16 +13,13 @@ from datetime import datetime, timezone
 
 
 def load_schedule(path):
-    """予定の一覧を JSON ファイルから読み込む。"""
     try:
         with open(path, encoding="utf-8") as f:
             events = json.load(f)
-    except Exception:
-        return []
-    # 読みやすいように、開始時刻の順に並べ替えて保存し直しておく
-    events.sort(key=lambda ev: ev["start"])
-    with open(path, "w", encoding="utf-8") as f:
-        json.dump(events, f, ensure_ascii=False, indent=2)
+    except FileNotFoundError as exc:
+        print(f"ファイルが見つかりません: {exc}")
+        return 1
+
     return events
 
 
@@ -42,6 +39,13 @@ def format_event(event):
 def main():
     if len(sys.argv) >= 2:
         date = sys.argv[1]
+
+        try:
+            datetime.strptime(date, "%Y-%m-%d")
+        except ValueError:
+            print("日付形式が正しくありません")
+            return 1
+
     else:
         date = datetime.now(timezone.utc).strftime("%Y-%m-%d")
 
@@ -55,3 +59,6 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
+
