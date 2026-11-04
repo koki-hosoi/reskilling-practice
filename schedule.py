@@ -24,7 +24,7 @@ def load_schedule(path: Path):
 def filter_by_date(schedule, target_date: str):
     """指定した日付の予定だけを、開始時刻順に返す。"""
     target = datetime.strptime(target_date, "%Y-%m-%d").date()
-    filtered = []
+    filtered = []#リストの変数(27行目)
 
     for item in schedule:
         start_text = item.get("start")
@@ -58,7 +58,7 @@ def format_event(item):
 
 def main():
     if len(sys.argv) > 1:
-        target_date = sys.argv[1]
+        target_date = sys.argv[1]#文字列の変数(61行目)
     else:
         target_date = datetime.now(JST).strftime("%Y-%m-%d")
 
@@ -73,7 +73,8 @@ def main():
         print(f"schedule.json の内容が正しくありません: {exc}")
         return 1
 
-    print(f"{target_date} の予定 {len(selected)} 件")
+    print(f"{target_date} の予定 {len(selected)} 件")#len(selected)←数の変数(76行目)
+
     for item in selected:
         print(format_event(item))
 
